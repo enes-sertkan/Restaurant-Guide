@@ -1,10 +1,12 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import AboutCard from './AboutCard';
 
 const AboutScreen = () => {
     return (
         <View style={styles.container}>
+        <AboutCard />
             <Text>About Page</Text>
             <StatusBar style="auto" />
         </View>
