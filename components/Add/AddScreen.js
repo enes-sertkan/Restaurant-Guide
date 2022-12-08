@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, SafeAreaView, Image, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, Image, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import AddImage from "../../assets/add.png";
 
 const AddScreen = ({ navigation }) => {
@@ -8,6 +8,7 @@ const AddScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [rating, setRating] = useState("");
   const [description, setDescription] = useState("");
+  const [isFilledOut, setIsFilledOut] = useState(false);
 
   const handleReset = () => {
     setName("")
@@ -15,46 +16,71 @@ const AddScreen = ({ navigation }) => {
     setPhone("")
     setRating("")
     setDescription("")
-    console.log("ADD SCREEN -> Cleared Input Fields")
+    console.log("ADD SCREEN -> Reset Clicked")
   }
+  const handleCancel = () => {
+    setName("")
+    setAddress("")
+    setPhone("")
+    setRating("")
+    setDescription("")
+    navigation.navigate("Home")
+    console.log("ADD SCREEN -> Cancel Clicked")
+  }
+  
+  const handleSubmit = () => {
+    if(name === "" || address === "" || phone === "" || rating  === "" || description === "") {
+      setIsFilledOut(false);
+    } else {
+      setIsFilledOut(true);
+    }
 
-    return (
-      <SafeAreaView style={styles.container}>
-          <Image source={AddImage}
-            style={{ 
-              width: "100%", 
-              height: 125
-            }}
-            resizeMode="contain"
-          />
-          <Text style={styles.heading}>Add a new restaurant</Text>
-        <ScrollView style={styles.scrollView}>
+    if(isFilledOut) {
+      console.log(name, address, phone, rating, description);
+    } else {
+      Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
+      console.log("ADD SCREEN -> Submit: IS NOT FILLED")
+    }
 
-          <TextInput value={name} style={styles.input} placeholder='Restaurant Name' onChangeText={ (name) => setName(name) } />
-          <TextInput value={address} style={styles.input} placeholder='Address' onChangeText={ (address) => setAddress(address) } />
-          <TextInput value={phone} style={styles.input} keyboardType="phone-pad" placeholder='Phone Number' onChangeText={ (phone) => setPhone(phone) } />
-          <TextInput value={rating} style={styles.input} keyboardType="numeric" placeholder='Rating' onChangeText={ (rating) => setRating(rating) } />
-          <TextInput value={description} style={[styles.input, styles.descriptionInput, {marginBottom: 10}]} placeholder='Description' multiline numberOfLines={10} onChangeText={ (description) => setDescription(description) } />
+  } 
+
+  return (
+    <SafeAreaView style={styles.container}>
+        <Image source={AddImage}
+          style={{ 
+            width: "100%", 
+            height: 125
+          }}
+          resizeMode="contain"
+        />
+        <Text style={styles.heading}>Add a new restaurant</Text>
+      <ScrollView style={styles.scrollView}>
+
+        <TextInput value={name} style={styles.input} placeholder='Restaurant Name' onChangeText={ (name) => setName(name) } />
+        <TextInput value={address} style={styles.input} placeholder='Address' onChangeText={ (address) => setAddress(address) } />
+        <TextInput value={phone} style={styles.input} keyboardType="phone-pad" placeholder='Phone Number' onChangeText={ (phone) => setPhone(phone) } />
+        <TextInput value={rating} style={styles.input} keyboardType="numeric" placeholder='Rating' onChangeText={ (rating) => setRating(rating) } />
+        <TextInput value={description} style={[styles.input, styles.descriptionInput, {marginBottom: 10}]} placeholder='Description' multiline numberOfLines={10} onChangeText={ (description) => setDescription(description) } />
 
 
-          <View style={styles.btnContainer}>
-            <TouchableOpacity style={styles.submitBtn} onPress={ () => {console.log(name, address, phone, rating, description)} } >
-              <Text style={{  }}>Submit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelBtn} onPress={ () => navigation.navigate("Home") } >
-              <Text style={{  }}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-            <TouchableOpacity style={styles.resetBtn} onPress={handleReset} >
-              <Text style={{  }}>Reset</Text>
-            </TouchableOpacity>
-          
-
-        </ScrollView>
+        <View style={styles.btnContainer}>
+          <TouchableOpacity style={styles.submitBtn} onPress={ handleSubmit } >
+            <Text style={{  }}>Submit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.cancelBtn} onPress={ handleCancel  } >
+            <Text style={{  }}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+          <TouchableOpacity style={styles.resetBtn} onPress={ handleReset } >
+            <Text style={{  }}>Reset</Text>
+          </TouchableOpacity>
         
-      </SafeAreaView>
-        
-    )
+
+      </ScrollView>
+      
+    </SafeAreaView>
+      
+  )
 }
 
 const styles = StyleSheet.create({
