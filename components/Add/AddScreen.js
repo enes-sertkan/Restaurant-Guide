@@ -50,18 +50,19 @@ const AddScreen = ({ navigation }) => {
     setPhone("")
     setRating("")
     setDescription("")
+    
+    setIsFilledOut(false);
+
     navigation.navigate("Home")
     console.log("ADD SCREEN -> Cancel Clicked")
   }
   
   const handleSubmit = () => {
     if(name === "" || address === "" || phone === "" || rating  === "" || description === "") {
-      setIsFilledOut(false);
+      //setIsFilledOut(false);
+      Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
     } else {
-      setIsFilledOut(true);
-    }
-
-    if(isFilledOut) {
+      //setIsFilledOut(true);
       console.log(name, address, phone, rating, description);
       db.transaction(tx => {
         tx.executeSql(`INSERT INTO restaurant (name, address, phone, rating, description) values (?, ?, ?, ?, ?)`, 
@@ -74,10 +75,13 @@ const AddScreen = ({ navigation }) => {
           (txObj, err) => console.log(err)
         );
       })
-    } else {
-      Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
-      console.log("ADD SCREEN -> Submit: IS NOT FILLED")
     }
+
+    // if(isFilledOut) {
+    // } else {
+    //   Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
+    //   console.log("ADD SCREEN -> Submit: IS NOT FILLED")
+    // }
 
   } 
 
