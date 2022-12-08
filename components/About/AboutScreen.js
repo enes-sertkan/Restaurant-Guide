@@ -24,7 +24,7 @@ const AboutScreen = () => {
             
             <StatusBar style="auto" />
         </View>
-        </ScrollView>
+      </ScrollView>
     )
 }
 
