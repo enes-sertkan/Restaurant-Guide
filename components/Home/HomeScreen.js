@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, SafeAreaView, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ActivityIndicator, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 import * as SQLite from "expo-sqlite";
@@ -16,17 +16,17 @@ const HomeScreen = ({ navigation }) => {
     });
 
     const listen = navigation.addListener("focus", () => {
-
       // TODO: replace null with pre-made restaurants data
       db.transaction(tx => {
-        tx.executeSql(`SELECT * FROM restaurant`, null, 
+        tx.executeSql(`SELECT * FROM restaurant ORDER BY id DESC`, null, 
           (txObj, res) => setResult(res.rows._array),
           (txObj, err) => console.log(err)
         );
       });
 
+      
       console.log("Home Screen")
-    })
+    });
 
     return listen;
   }, [navigation])
@@ -34,7 +34,6 @@ const HomeScreen = ({ navigation }) => {
   const showRestaurants = () => {
     return result.map((restaurant, index) => {
       return (
-        <>
           <View key={index} style={styles.row}>
             <Text>Name: {restaurant.name} </Text>
             <Text>Address: {restaurant.address}</Text>
@@ -42,7 +41,6 @@ const HomeScreen = ({ navigation }) => {
             <Text>Rating: {restaurant.rating}</Text>
             <Text>Description: {restaurant.description}</Text>
           </View>
-        </>
       )
     })
   }
@@ -57,10 +55,13 @@ const HomeScreen = ({ navigation }) => {
 
     return (
       <SafeAreaView style={styles.container}>
-        <View>
-            <Text>Home Page</Text>
-            {showRestaurants()}
-        </View>
+        <ScrollView>
+
+          <View>
+              <Text>Home Page</Text>
+              {showRestaurants()}
+          </View>
+        </ScrollView>
       </SafeAreaView>
     )
 }
