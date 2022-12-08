@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, SafeAreaView, ActivityIndicator, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ActivityIndicator, ScrollView, Button, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import Ionic from "react-native-vector-icons/Ionicons";
 
 import * as SQLite from "expo-sqlite";
 
@@ -34,14 +35,36 @@ const HomeScreen = ({ navigation }) => {
   const showRestaurants = () => {
     return result.map((restaurant, index) => {
       return (
+        // TODO: Change to FlatList
           <View key={index} style={styles.row}>
             <Text>Name: {restaurant.name} </Text>
             <Text>Address: {restaurant.address}</Text>
             <Text>Phone: {restaurant.phone}</Text>
             <Text>Rating: {restaurant.rating}</Text>
             <Text>Description: {restaurant.description}</Text>
+
+            <TouchableOpacity style={styles.deleteBtn} onPress={() => deleteRestaurant(restaurant.id)}>
+              <Text>
+                <Ionic name="trash" size={15} />
+                Remove
+              </Text>
+            </TouchableOpacity>
           </View>
       )
+    })
+  }
+
+  const deleteRestaurant = (id) => {
+    db.transaction(tx => {
+      tx.executeSql(`DELETE FROM restaurant WHERE id = ?`, [id],
+        (txObj, resultSet) => {
+          if(resultSet.rowsAffected > 0) {
+            let existingRestaurants = [...result].filter(res => res.id !== id);
+            setResult(existingRestaurants);
+          }
+        },
+        (txObj, err) => console.log(err)
+      );
     })
   }
 
@@ -85,6 +108,16 @@ const styles = StyleSheet.create({
       alignSelf: "stretch",
       justifyContent: "space-between",
       margin: 8
+    },
+    deleteBtn: {
+      backgroundColor: "#FF7070",
+      alignItems: "center",
+      justifyContent: 'center',
+      alignSelf: 'auto',
+      paddingVertical: 5,
+      paddingHorizontal: 5,
+      borderRadius: 20,
+      elevation: 10
     }
   });
 
