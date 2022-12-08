@@ -7,7 +7,7 @@ const AboutCard = ({ name, jobTitle, image }) => {
   return (
     <View style={styles.cardContainer}>
     <Image style={styles.picture} source={image} />
-    <View style={styles.info}>
+    <View>
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.jobTitle}>{jobTitle}</Text>
     </View>
