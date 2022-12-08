@@ -3,22 +3,33 @@ import {View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 
 
 
-const AboutCard = () => {
+const AboutCard = ({ name, jobTitle, image }) => {
   return (
     <View style={styles.cardContainer}>
-        <Image style={styles.picture} source={require('./images/shakil.jpg')} />
-        <Text style={styles.name}>Shakil Miah (101308549)</Text>
-        <Text style={styles.jobTitle}>Senior Developer</Text>
+    <Image style={styles.picture} source={image} />
+    <View style={styles.info}>
+      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.jobTitle}>{jobTitle}</Text>
     </View>
+  </View>
   )
 }
+
+const staff = [{
+    name: 'Shakil Miah',
+    jobTitle: 'Senior Developer',
+    picture: require('./images/shakil.jpg'),
+
+},{
+    name: 'Humaiyun Uddin',
+    jobTitle: 'Senior Developer',
+    picture: require('./images/humaiyun.jpg'),
+}]
 
 const deviceWidth = Math.round(Dimensions.get('window').width);
 
 const styles = StyleSheet.create({
     cardContainer: {
-     //alignItems: 'center',
-      //padding: 20,
       width: deviceWidth - 40,
       backgroundColor: '#F4F4F4',
       height: 260,
@@ -28,6 +39,7 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.5,
       elevation: 5,
       shadowRadius: 10,
+      marginBottom: 20,
     },
     picture: {
       width: deviceWidth - 40,
