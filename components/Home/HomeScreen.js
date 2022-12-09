@@ -43,12 +43,21 @@ const HomeScreen = ({ navigation }) => {
             <Text>Rating: {restaurant.rating}</Text>
             <Text>Description: {restaurant.description}</Text>
 
-            <TouchableOpacity style={styles.deleteBtn} onPress={() => deleteRestaurant(restaurant.id)}>
-              <Text>
-                <Ionic name="trash" size={15} />
-                Remove
-              </Text>
-            </TouchableOpacity>
+            <View style={styles.btnContainer}>
+
+              <TouchableOpacity style={styles.updateBtn} onPress={() => { } }>
+                <Text>
+                  <Ionic name="pencil" size={15} />
+                  Edit
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.deleteBtn} onPress={() => deleteRestaurant(restaurant.id)}>
+                <Text>
+                  <Ionic name="trash" size={15} />
+                  Remove
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
       )
     })
@@ -118,7 +127,25 @@ const styles = StyleSheet.create({
       paddingHorizontal: 5,
       borderRadius: 20,
       elevation: 10
-    }
+    },
+    updateBtn: {
+      backgroundColor: "#70E5FF",
+      alignItems: "center",
+      justifyContent: 'center',
+      alignSelf: 'auto',
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      borderRadius: 20,
+      elevation: 10,
+      marginRight: 10,
+    },
+    btnContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: "center",
+      flexDirection: "row",
+      marginBottom: 12
+    },
   });
 
 export default HomeScreen
