@@ -12,20 +12,16 @@ const SearchScreen = () => {
   };
 
     return (
-        <View style={styles.container}>
-          <TextInput
-        value={searchTerm}
-        onChangeText={setSearchTerm}
-        style={styles.searchInput}
-        placeholder="Search"
-      />
-      <Button onPress={handleSearch} title="Search" />
-      <Text>{searchTerm}</Text>
-      
-      
-      
-         
-        </View>
+      <View style={styles.container}>
+        <TextInput
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+          style={styles.searchInput}
+          placeholder="Search"
+        />
+        <Button onPress={handleSearch} title="Search" />
+        <Text>{searchTerm}</Text>
+      </View>
     )
 }
 
