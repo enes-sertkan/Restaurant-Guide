@@ -7,6 +7,7 @@ import * as SQLite from "expo-sqlite";
 
 const HomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [currId, setCurrId] = useState(null);
 
   const db = SQLite.openDatabase("restaurantdb.db");
   const [result, setResult] = useState([]);
@@ -17,6 +18,7 @@ const HomeScreen = ({ navigation }) => {
     });
 
     const listen = navigation.addListener("focus", () => {
+      setCurrId(null)
       // TODO: replace null with pre-made restaurants data
       db.transaction(tx => {
         tx.executeSql(`SELECT * FROM restaurant ORDER BY id DESC`, null, 
@@ -45,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
 
             <View style={styles.btnContainer}>
 
-              <TouchableOpacity style={styles.updateBtn} onPress={() => { } }>
+              <TouchableOpacity key={restaurant.id} style={styles.updateBtn} onPress={ () => { navigation.navigate("Add", { result: result, id: restaurant.id }) }}>
                 <Text>
                   <Ionic name="pencil" size={15} />
                   Edit
