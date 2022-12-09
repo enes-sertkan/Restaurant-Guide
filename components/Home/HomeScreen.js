@@ -113,6 +113,8 @@ const HomeScreen = ({ navigation, route }) => {
       </SafeAreaView>
       
       
+
+      
     )
   }
 
