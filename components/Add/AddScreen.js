@@ -98,6 +98,7 @@ const AddScreen = ({ navigation, route }) => {
       })
     }
 
+    navigation.navigate("Home")
     // if(isFilledOut) {
     // } else {
     //   Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
