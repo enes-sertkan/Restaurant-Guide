@@ -21,8 +21,8 @@ const AddScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     const listen = navigation.addListener("focus", () => {
-      setResult([]);
-      setCurrentRes({});
+      // setResult([]);
+      // setCurrentRes({});
       // Check if page was redirected by the update button
       // (route.params?.result.length > 0) ? setIsEdit(true) : setIsEdit(false)
       // console.log(route.params?.id);
