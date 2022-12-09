@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, FlatList, StyleSheet } from 'react-native';
+import { View, TextInput, Text, Button, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 const SearchScreen = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredList, setFilteredList] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filteredList = list.filter((item) => item.name.toLowerCase().includes(query.toLowerCase()));
-    setFilteredList(filteredList);
 
+  const handleSearch = () => {
+    // Perform the search and update the results state
+    
   };
 
     return (
         <View style={styles.container}>
           <TextInput
-            value={searchQuery}
-            //onChangeText={(query) => handleSearch(query)}
-            placeholder="Enter search query"
-            style={styles.searchInput}
-          />
-          {/* {filteredList && (
-        <FlatList
-            data={filteredList}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-            <Text>{item.name}</Text>
-          )}
-        
-      )} */}
+        value={searchTerm}
+        onChangeText={setSearchTerm}
+        style={styles.searchInput}
+        placeholder="Search"
+      />
+      <Button onPress={handleSearch} title="Search" />
+      <Text>{searchTerm}</Text>
+      
+      
+      
+         
         </View>
     )
 }
