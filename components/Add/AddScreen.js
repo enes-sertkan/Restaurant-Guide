@@ -4,7 +4,7 @@ import AddImage from "../../assets/add.png";
 
 import * as SQLite from "expo-sqlite";
 
-const AddScreen = ({ navigation }) => {
+const AddScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
@@ -12,10 +12,14 @@ const AddScreen = ({ navigation }) => {
   const [description, setDescription] = useState("");
   const [isFilledOut, setIsFilledOut] = useState(false);
 
+  const [isEdit, setIsEdit] = useState(false);
+
   const [db, setDb] = useState(SQLite.openDatabase("restaurantdb.db"));
   const [result, setResult] = useState([]);
 
   useEffect(() => {
+    // Check if page was redirected by the update button
+    (route.params?.result.length > 0) ? setIsEdit(true) : setIsEdit(false);
 
     const listen = navigation.addListener("focus", () => {
       
@@ -94,7 +98,8 @@ const AddScreen = ({ navigation }) => {
           }}
           resizeMode="contain"
         />
-        <Text style={styles.heading}>Add a new restaurant</Text>
+        {isEdit ? <Text style={styles.heading}>Edit existing restaurant</Text> : <Text style={styles.heading}>Add a new restaurant</Text>}
+        
       <ScrollView style={styles.scrollView}>
 
         <TextInput value={name} style={styles.input} placeholder='Restaurant Name' onChangeText={ (name) => setName(name) } />
