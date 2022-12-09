@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { View, TextInput, Text, Button, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'react-native';
 import Ionic from "react-native-vector-icons/Ionicons";
 import * as SQLite from "expo-sqlite";
 
@@ -59,7 +59,7 @@ const SearchScreen = () => {
 
             {
               searchResult.map((restaurant, index) => (
-                <Text key={index}>{restaurant.name}</Text>
+                <SearchCard name={restaurant.name} jobTitle={restaurant.rating} />
               ))
             }
 
@@ -99,6 +99,18 @@ const styles = StyleSheet.create({
       width: '90%',
       borderRadius: 20,
     },
+    name: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: 10,
+      paddingLeft:15,
+    },
+    jobTitle: {
+      fontSize: 14,
+      color: 'grey',
+      marginTop: 5,
+      paddingLeft:15,
+    }
   });
 
 export default SearchScreen
