@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Text, SafeAreaView, Image, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import AddImage from "../../assets/add.png";
 
-const AddScreen = ({ navigation }) => {
+import * as SQLite from "expo-sqlite";
+
+const AddScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
@@ -10,12 +12,57 @@ const AddScreen = ({ navigation }) => {
   const [description, setDescription] = useState("");
   const [isFilledOut, setIsFilledOut] = useState(false);
 
+  const [isEdit, setIsEdit] = useState(false);
+  const [currentRes, setCurrentRes] = useState({});
+  const [query, setQuery] = useState("")
+
+  const [db, setDb] = useState(SQLite.openDatabase("restaurantdb.db"));
+  const [result, setResult] = useState([]);
+
+  useEffect(() => {
+    const listen = navigation.addListener("focus", () => {
+      setResult([]);
+      setCurrentRes({});
+      // Check if page was redirected by the update button
+      // (route.params?.result.length > 0) ? setIsEdit(true) : setIsEdit(false)
+      // console.log(route.params?.id);
+      // `UPDATE restaurant SET name=?, address=?, phone=?, rating=?, description=? where id = ?`, 
+      // [name, address, phone, rating, description, route.params?.result.id]
+      console.log("Add Screen")
+
+
+      // if(route.params?.result && route.params?.id) {
+      //   //console.log(route.params?.result);
+      //   console.log(route.params?.result.filter(res => res.id === route.params.id)[0]);
+      //   setCurrentRes(route.params?.result.filter(res => res.id === route.params.id)[0])
+      //   setIsEdit(true);
+      // } else {
+      //   setIsEdit(false);
+      //   setQuery("INSERT INTO restaurant (name, address, phone, rating, description) values (?, ?, ?, ?, ?)")
+      // }
+
+      // TODO: replace null with pre-made restaurants data
+      db.transaction(tx => {
+        tx.executeSql(`SELECT * FROM restaurant`, null, 
+          (txObj, res) => setResult(res.rows._array),
+          (txObj, err) => console.log(err)
+        );
+      });
+
+    })
+
+    return listen;
+
+  }, [navigation])
+
   const handleReset = () => {
     setName("")
     setAddress("")
     setPhone("")
     setRating("")
     setDescription("")
+
+    setIsFilledOut(false);
     console.log("ADD SCREEN -> Reset Clicked")
   }
   const handleCancel = () => {
@@ -24,23 +71,38 @@ const AddScreen = ({ navigation }) => {
     setPhone("")
     setRating("")
     setDescription("")
+    
+    setIsFilledOut(false);
+
     navigation.navigate("Home")
     console.log("ADD SCREEN -> Cancel Clicked")
   }
   
   const handleSubmit = () => {
     if(name === "" || address === "" || phone === "" || rating  === "" || description === "") {
-      setIsFilledOut(false);
+      //setIsFilledOut(false);
+      Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
     } else {
-      setIsFilledOut(true);
+      //setIsFilledOut(true);
+      console.log(name, address, phone, rating, description);
+      db.transaction(tx => {
+        tx.executeSql("INSERT INTO restaurant (name, address, phone, rating, description) values (?, ?, ?, ?, ?)", 
+          [name, address, phone, rating, description],
+          (txObj, resultSet) => {
+            let existingRestaurants = [...result];
+            existingRestaurants.push({ id: resultSet.insertId, name, address, phone, rating, description});
+            handleReset();
+          },
+          (txObj, err) => console.log(err)
+        );
+      })
     }
 
-    if(isFilledOut) {
-      console.log(name, address, phone, rating, description);
-    } else {
-      Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
-      console.log("ADD SCREEN -> Submit: IS NOT FILLED")
-    }
+    // if(isFilledOut) {
+    // } else {
+    //   Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
+    //   console.log("ADD SCREEN -> Submit: IS NOT FILLED")
+    // }
 
   } 
 
@@ -53,13 +115,15 @@ const AddScreen = ({ navigation }) => {
           }}
           resizeMode="contain"
         />
-        <Text style={styles.heading}>Add a new restaurant</Text>
+        {isEdit ? <Text style={styles.heading}>Edit existing restaurant</Text> : <Text style={styles.heading}>Add a new restaurant</Text>}
+        {/* <Text style={styles.heading}>Add a new restaurant</Text> */}
+        
       <ScrollView style={styles.scrollView}>
 
         <TextInput value={name} style={styles.input} placeholder='Restaurant Name' onChangeText={ (name) => setName(name) } />
         <TextInput value={address} style={styles.input} placeholder='Address' onChangeText={ (address) => setAddress(address) } />
         <TextInput value={phone} style={styles.input} keyboardType="phone-pad" placeholder='Phone Number' onChangeText={ (phone) => setPhone(phone) } />
-        <TextInput value={rating} style={styles.input} keyboardType="numeric" placeholder='Rating' onChangeText={ (rating) => setRating(rating) } />
+        <TextInput value={rating} style={styles.input} keyboardType="numeric" placeholder='Rating (0 to 5)' onChangeText={ (rating) => setRating(rating) } />
         <TextInput value={description} style={[styles.input, styles.descriptionInput, {marginBottom: 10}]} placeholder='Description' multiline numberOfLines={10} onChangeText={ (description) => setDescription(description) } />
 
 
