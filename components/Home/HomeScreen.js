@@ -6,6 +6,10 @@ import Ionic from "react-native-vector-icons/Ionicons";
 
 import * as SQLite from "expo-sqlite";
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const HomeScreen = ({ navigation, route }) => {
   const Stack = createStackNavigator();
 
@@ -16,12 +20,27 @@ const HomeScreen = ({ navigation, route }) => {
   const [result, setResult] = useState([]);
 
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
+  useEffect(() => {
+    console.log(refreshing)
+    db.transaction(tx => {
+      tx.executeSql(`SELECT * FROM restaurant ORDER BY id DESC`, null, 
+        (txObj, res) => setResult(res.rows._array),
+        (txObj, err) => console.log(err)
+      );
+    });
+  }, [refreshing]);
 
   useEffect(() => {
     db.transaction(tx => {
       tx.executeSql(`CREATE TABLE IF NOT EXISTS restaurant (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT(128), address TEXT(512), phone TEXT(32), rating TEXT(32), description TEXT(1024))`);
     });
-
     const listen = navigation.addListener("focus", () => {
 
       // console.log(route.params?.updatedRestaurant);
@@ -51,7 +70,15 @@ const HomeScreen = ({ navigation, route }) => {
   const ShowRestaurants = () => {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+        }
+        >
         {
           result.map((restaurant, index) => {
             return (
