@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, SafeAreaView, ActivityIndicator, ScrollView, Button, TouchableOpacity } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import EditScreen from './EditScreen';
+import { createStackNavigator } from '@react-navigation/stack';
 import Ionic from "react-native-vector-icons/Ionicons";
 
 import * as SQLite from "expo-sqlite";
 
 const HomeScreen = ({ navigation }) => {
+  const Stack = createStackNavigator();
+
   const [isLoading, setIsLoading] = useState(false);
   const [currId, setCurrId] = useState(null);
 
@@ -34,35 +37,45 @@ const HomeScreen = ({ navigation }) => {
     return listen;
   }, [navigation])
 
-  const showRestaurants = () => {
-    return result.map((restaurant, index) => {
-      return (
-        // TODO: Change to FlatList
-          <View key={index} style={styles.row}>
-            <Text>Name: {restaurant.name} </Text>
-            <Text>Address: {restaurant.address}</Text>
-            <Text>Phone: {restaurant.phone}</Text>
-            <Text>Rating: {restaurant.rating}</Text>
-            <Text>Description: {restaurant.description}</Text>
-
-            <View style={styles.btnContainer}>
-
-              <TouchableOpacity key={restaurant.id} style={styles.updateBtn} onPress={ () => { navigation.navigate("Add", { result: result, id: restaurant.id }) }}>
-                <Text>
-                  <Ionic name="pencil" size={15} />
-                  Edit
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteBtn} onPress={() => deleteRestaurant(restaurant.id)}>
-                <Text>
-                  <Ionic name="trash" size={15} />
-                  Remove
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-      )
-    })
+  const ShowRestaurants = () => {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+        {
+          result.map((restaurant, index) => {
+            return (
+              // TODO: Change to FlatList
+                <View key={index} style={styles.row}>
+                  <Text>Name: {restaurant.name} </Text>
+                  <Text>Address: {restaurant.address}</Text>
+                  <Text>Phone: {restaurant.phone}</Text>
+                  <Text>Rating: {restaurant.rating}</Text>
+                  <Text>Description: {restaurant.description}</Text>
+      
+                  <View style={styles.btnContainer}>
+      
+                    <TouchableOpacity key={restaurant.id} style={styles.updateBtn} onPress={ () => { navigation.navigate("Edit", { restaurant }) } }>
+                      <Text>
+                        <Ionic name="pencil" size={15} />
+                        Edit
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.deleteBtn} onPress={() => deleteRestaurant(restaurant.id)}>
+                      <Text>
+                        <Ionic name="trash" size={15} />
+                        Remove
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            )
+          })
+        }
+        </ScrollView>
+      </SafeAreaView>
+      
+      
+    )
   }
 
   const deleteRestaurant = (id) => {
@@ -88,15 +101,20 @@ const HomeScreen = ({ navigation }) => {
   }
 
     return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-
-          <View>
-              <Text>Home Page</Text>
+      <>
+        <Stack.Navigator initialRouteName='MainHome'>
+          <Stack.Screen name="MainHome" component={ShowRestaurants} options={{ headerShown: false }} />
+          <Stack.Screen name="Edit" component={EditScreen} />
+        </Stack.Navigator>
+        {/* <Stack.Navigator>
+          <Stack.Screen name="Edit" component={EditScreen} />
+        </Stack.Navigator>
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
               {showRestaurants()}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          </ScrollView>
+        </SafeAreaView> */}
+      </>
     )
 }
 
