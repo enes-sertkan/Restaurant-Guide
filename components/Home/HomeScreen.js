@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, SafeAreaView, ActivityIndicator, ScrollView, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, ActivityIndicator, ScrollView, Button, TouchableOpacity, RefreshControl } from 'react-native';
 import EditScreen from './EditScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionic from "react-native-vector-icons/Ionicons";
 
 import * as SQLite from "expo-sqlite";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
   const Stack = createStackNavigator();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -15,12 +15,23 @@ const HomeScreen = ({ navigation }) => {
   const db = SQLite.openDatabase("restaurantdb.db");
   const [result, setResult] = useState([]);
 
+
+
   useEffect(() => {
     db.transaction(tx => {
       tx.executeSql(`CREATE TABLE IF NOT EXISTS restaurant (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT(128), address TEXT(512), phone TEXT(32), rating TEXT(32), description TEXT(1024))`);
     });
 
     const listen = navigation.addListener("focus", () => {
+
+      // console.log(route.params?.updatedRestaurant);
+      // console.log(route.params?.indexToUpdate);
+
+      // if (route.params?.updatedRestaurant) {
+      //   currentRestaurants = [...result];
+      //   console.log(currentRestaurants);
+      // }
+
       setCurrId(null)
       // TODO: replace null with pre-made restaurants data
       db.transaction(tx => {
