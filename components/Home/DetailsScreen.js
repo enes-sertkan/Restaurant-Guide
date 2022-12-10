@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Linking } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { createStackNavigator } from '@react-navigation/stack';
 import Ionic from "react-native-vector-icons/Ionicons";
@@ -24,8 +24,16 @@ const IMAGE_ARRAY = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10
 const Stack = createStackNavigator();
 
 const DetailsScreen = ({navigation, route}) => {
-
     const res = route.params?.restaurant;
+    const onShareViaEmail = () => {
+        const subject = `Information about ${res.name}`;
+        const body = `Name: ${res.name}\nAddress: ${res.address}\nPhone: ${res.phone}\nDescription: ${res.description}`;
+        const url = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+        Linking.openURL(url);
+      };
+
+    
 
     const Details = () => {
         return (
@@ -51,7 +59,7 @@ const DetailsScreen = ({navigation, route}) => {
                                Directions
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.share}>
+                        <TouchableOpacity style={styles.share} onPress={onShareViaEmail}>
                             <Text style={{ fontSize: 16 }}>
                                 <Ionic name="share" size={30} />
                                 Share
