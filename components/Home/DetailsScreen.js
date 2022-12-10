@@ -25,7 +25,7 @@ const Stack = createStackNavigator();
 
 const DetailsScreen = ({navigation, route}) => {
 
-    const resAddress = route.params?.restaurant.address;
+    const res = route.params?.restaurant;
 
     const Details = () => {
         return (
@@ -45,7 +45,7 @@ const DetailsScreen = ({navigation, route}) => {
                                {route.params?.restaurant.rating}
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.directions} onPress={ () => navigation.navigate("Location", { resAddress }) }>
+                        <TouchableOpacity style={styles.directions} onPress={ () => navigation.navigate("Location", { res }) }>
                             <Text style={styles.shareTxt}>
                                 <Ionic name="location" size={30} />
                                Directions
