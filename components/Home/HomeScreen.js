@@ -97,7 +97,10 @@ const HomeScreen = ({ navigation, route }) => {
                   <View>
                     <Text style={styles.name}>{restaurant.name} </Text>
                     {/* TO DO: Convert Rating to Badge */}
-                    <Text style={styles.rating}> {restaurant.rating}/5</Text>     
+                    <Text style={styles.rating}> 
+                      <Ionic name="star" size={15} /> &nbsp;
+                      {restaurant.rating}/5
+                    </Text>     
                   </View>
                 </TouchableOpacity>
 
