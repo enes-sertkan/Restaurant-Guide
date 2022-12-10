@@ -48,7 +48,7 @@ const HomeScreen = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    console.log(refreshing)
+    // console.log(refreshing)
     db.transaction(tx => {
       tx.executeSql(`SELECT * FROM restaurant ORDER BY id DESC`, null, 
         (txObj, res) => setResult(res.rows._array),
@@ -56,11 +56,12 @@ const HomeScreen = ({ navigation, route }) => {
       );
     });
   }, [refreshing]);
-
+  
   useEffect(() => {
     db.transaction(tx => {
       tx.executeSql(`CREATE TABLE IF NOT EXISTS restaurant (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT(128), address TEXT(512), phone TEXT(32), rating TEXT(32), description TEXT(1024))`);
     });
+
     const listen = navigation.addListener("focus", () => {
 
       // console.log(route.params?.updatedRestaurant);
@@ -81,7 +82,7 @@ const HomeScreen = ({ navigation, route }) => {
       });
 
       
-      console.log("Home Screen")
+      // console.log("Home Screen")
     });
 
     return listen;

@@ -39,7 +39,7 @@ const SearchScreen = () => {
 
       return name.includes(searched) || description.includes(searched);
     }));
-    console.log(searchResult)
+    // console.log(searchResult)
   };
 
   useEffect(() => {

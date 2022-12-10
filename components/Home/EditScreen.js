@@ -16,7 +16,7 @@ const EditScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     const listen = navigation.addListener("focus", () => {
-      console.log("Edit Screen")
+      // console.log("Edit Screen")
       setName(route.params?.restaurant.name);
       setAddress(route.params?.restaurant.address);
       setPhone(route.params?.restaurant.phone);
