@@ -48,7 +48,6 @@ const HomeScreen = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    // console.log(refreshing)
     db.transaction(tx => {
       tx.executeSql(`SELECT * FROM restaurant ORDER BY id DESC`, null, 
         (txObj, res) => setResult(res.rows._array),
@@ -63,26 +62,13 @@ const HomeScreen = ({ navigation, route }) => {
     });
 
     const listen = navigation.addListener("focus", () => {
-
-      // console.log(route.params?.updatedRestaurant);
-      // console.log(route.params?.indexToUpdate);
-
-      // if (route.params?.updatedRestaurant) {
-      //   currentRestaurants = [...result];
-      //   console.log(currentRestaurants);
-      // }
-
       setCurrId(null)
-      // TODO: replace null with pre-made restaurants data
       db.transaction(tx => {
         tx.executeSql(`SELECT * FROM restaurant ORDER BY id DESC`, null, 
           (txObj, res) => setResult(res.rows._array),
           (txObj, err) => console.log(err)
         );
       });
-
-      
-      // console.log("Home Screen")
     });
 
     return listen;
@@ -146,7 +132,6 @@ const HomeScreen = ({ navigation, route }) => {
         {/* {
           result.map((restaurant, index) => {
             return (
-              // TODO: Change to FlatList
                 <View key={index} style={styles.row}>
                   <Text>Name: {restaurant.name} </Text>
                   <Text>Address: {restaurant.address}</Text>
