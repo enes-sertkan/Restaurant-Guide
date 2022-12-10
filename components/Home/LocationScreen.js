@@ -38,8 +38,8 @@ const LocationScreen = ({ navigation, route }) => {
                                     // longitude: -79.4073607,
                                     latitude: latLng?.results[0]?.locations[0]?.displayLatLng?.lat,
                                     longitude: latLng?.results[0]?.locations[0]?.displayLatLng?.lng,
-                                    latitudeDelta: 0.0922,
-                                    longitudeDelta: 0.0421,
+                                    latitudeDelta: 0.0122,
+                                    longitudeDelta: 0.0,
                                 }}
                             >
                                 <Marker coordinate={{ latitude: latLng?.results[0]?.locations[0]?.displayLatLng?.lat, longitude: latLng?.results[0]?.locations[0]?.displayLatLng?.lng,}}>
@@ -71,10 +71,11 @@ const styles = StyleSheet.create({
     },
     viewContainer: {
         borderWidth: 1,
-        padding: 10,
+        padding: 3,
         marginHorizontal: 10,
         height: "80%",
-        marginBottom: 10
+        marginBottom: 10,
+        borderRadius: 10
     },
     map: {
       width: '100%',
