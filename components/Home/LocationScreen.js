@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import MapView, { Callout, Marker } from 'react-native-maps';
 import Ionic from "react-native-vector-icons/Ionicons";
+import * as Linking from 'expo-linking';
 
 const LocationScreen = ({ navigation, route }) => {
     const [latLng, setLatLng] = useState({});
-
-    console.log()
 
     const fetchGeocode = async () => {
         const res = await fetch(`http://www.mapquestapi.com/geocoding/v1/address?key=X3AaP9joQdh04SfTypgNbmwq45NYXb3s&location=${route.params?.res.address}`);
@@ -19,7 +18,12 @@ const LocationScreen = ({ navigation, route }) => {
         fetchGeocode();
     }, []);
 
-
+    const linkQuery = () => {
+        const name = route.params?.res.name.toLowerCase()
+        const address = route.params?.res.address.toLowerCase()
+        const combined = name.concat("+", address);
+        return combined.replace(" ", "+");
+    }
 
     return (
         <SafeAreaView style={{ backgroundColor: "#FFF"}}>
@@ -27,8 +31,6 @@ const LocationScreen = ({ navigation, route }) => {
                 latLng.results ? (
                     <>
                         <View style={styles.viewContainer}>
-                            {/* {console.log(latLng?.results[0]?.locations[0]?.displayLatLng?.lat)}
-                            {console.log(latLng?.results[0]?.locations[0]?.displayLatLng?.lng)} */}
                             <MapView 
                                 style={styles.map} 
                                 initialRegion={{
@@ -47,7 +49,7 @@ const LocationScreen = ({ navigation, route }) => {
                                 </Marker>
                             </MapView>
                         </View>
-                        <TouchableOpacity style={styles.directions} >
+                        <TouchableOpacity style={styles.directions} onPress={ () => Linking.openURL(`http://maps.google.com/?q=${linkQuery()}`) }>
                             <Text style={styles.shareTxt}>
                                 <Ionic name="location" size={30} />
                                 Open in Google Maps
