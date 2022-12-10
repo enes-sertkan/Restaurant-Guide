@@ -16,7 +16,6 @@ const AddScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     const listen = navigation.addListener("focus", () => {
-      console.log("Add Screen")
       db.transaction(tx => {
         tx.executeSql(`SELECT * FROM restaurant`, null, 
           (txObj, res) => setResult(res.rows._array),
@@ -36,7 +35,6 @@ const AddScreen = ({ navigation, route }) => {
     setPhone("")
     setRating("")
     setDescription("")
-    console.log("ADD SCREEN -> Reset Clicked")
   }
   const handleCancel = () => {
     setName("")
@@ -45,14 +43,12 @@ const AddScreen = ({ navigation, route }) => {
     setRating("")
     setDescription("")
     navigation.navigate("Home")
-    console.log("ADD SCREEN -> Cancel Clicked")
   }
   
   const handleSubmit = () => {
     if(name === "" || address === "" || phone === "" || rating  === "" || description === "") {
       Alert.alert("❗ Error - Empty Fields", "Please fill in the empty fields")
     } else {
-      console.log(name, address, phone, rating, description);
       db.transaction(tx => {
         tx.executeSql("INSERT INTO restaurant (name, address, phone, rating, description) values (?, ?, ?, ?, ?)", 
           [name, address, phone, rating, description],
