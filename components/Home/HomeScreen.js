@@ -131,7 +131,7 @@ const HomeScreen = ({ navigation, route }) => {
           })
 
         }
-        {
+        {/* {
           result.map((restaurant, index) => {
             return (
               // TODO: Change to FlatList
@@ -160,7 +160,7 @@ const HomeScreen = ({ navigation, route }) => {
                 </View>
             )
           })
-        }
+        } */}
         </ScrollView>
       </SafeAreaView>
       
