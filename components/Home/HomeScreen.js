@@ -18,10 +18,11 @@ import img12 from "../../assets/images/12-kalguksu.jpg";
 import img13 from "../../assets/images/13-potroast.jpg";
 import img14 from "../../assets/images/14-frenchfries.jpg";
 import img15 from "../../assets/images/15-beer.jpg";
+const IMAGE_ARRAY = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15];
 
+import DetailsScreen from './DetailsScreen';
 import * as SQLite from "expo-sqlite";
 
-const IMAGE_ARRAY = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15];
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -102,27 +103,37 @@ const HomeScreen = ({ navigation, route }) => {
           result.map((restaurant, index) => {
             return (
               <View style={styles.cardContainer} key={index}>
-                <Image style={styles.picture} source={IMAGE_ARRAY[Math.floor(Math.random()*IMAGE_ARRAY.length)]} />
+                
+                <TouchableOpacity onPress={ () => { navigation.navigate("Details", { restaurant }) } }>
+                  <Image style={styles.picture} source={IMAGE_ARRAY[Math.floor(Math.random()*IMAGE_ARRAY.length)]} />
 
-              <View>
-                <Text style={styles.name}>{restaurant.name} </Text>
-                {/* TO DO: Convert Rating to Badge */}
-                <Text style={styles.rating}> {restaurant.rating}/5</Text>     
-              </View>
-              <View style={styles.buttonContainer}>
-              <TouchableOpacity key={restaurant.id} style={styles.updateButton} onPress={ () => { navigation.navigate("Edit", { restaurant }) } }>
-                      <Text>
-                        <Ionic name="pencil" size={15} />
-                        Edit
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.deleteButton} onPress={() => deleteRestaurant(restaurant.id)}>
-                      <Text>
-                        <Ionic name="trash" size={15} />
-                        Remove
-                      </Text>
-                    </TouchableOpacity> 
-              </View>
+                  <View>
+                    <Text style={styles.name}>{restaurant.name} </Text>
+                    {/* TO DO: Convert Rating to Badge */}
+                    <Text style={styles.rating}> {restaurant.rating}/5</Text>     
+                  </View>
+                </TouchableOpacity>
+
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity key={restaurant.id} style={styles.updateButton} onPress={ () => { navigation.navigate("Edit", { restaurant }) } }>
+                    <Text>
+                      <Ionic name="pencil" size={15} />
+                      Edit
+                    </Text>
+                  </TouchableOpacity>
+                  {/* <TouchableOpacity key={restaurant.id} style={styles.detailsButton} onPress={ () => { navigation.navigate("Details", { restaurant }) } }>
+                    <Text>
+                      <Ionic name="information-outline" size={15} />
+                      Details
+                    </Text>
+                  </TouchableOpacity> */}
+                  <TouchableOpacity style={styles.deleteButton} onPress={() => deleteRestaurant(restaurant.id)}>
+                    <Text>
+                      <Ionic name="trash" size={15} />
+                      Remove
+                    </Text>
+                  </TouchableOpacity> 
+                </View>
               
               
               </View>
@@ -197,6 +208,7 @@ const HomeScreen = ({ navigation, route }) => {
         <Stack.Navigator initialRouteName='MainHome'>
           <Stack.Screen name="MainHome" component={ShowRestaurants} options={{ headerShown: false }} />
           <Stack.Screen name="Edit" component={EditScreen} />
+          <Stack.Screen name="Details" component={DetailsScreen} />
         </Stack.Navigator>
         {/* <Stack.Navigator>
           <Stack.Screen name="Edit" component={EditScreen} />
@@ -242,6 +254,17 @@ const styles = StyleSheet.create({
     },
     updateBtn: {
       backgroundColor: "#70E5FF",
+      alignItems: "center",
+      justifyContent: 'center',
+      alignSelf: 'auto',
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      borderRadius: 20,
+      elevation: 10,
+      marginRight: 10,
+    },
+    detailsButton: {
+      backgroundColor: "#70FFBA",
       alignItems: "center",
       justifyContent: 'center',
       alignSelf: 'auto',
