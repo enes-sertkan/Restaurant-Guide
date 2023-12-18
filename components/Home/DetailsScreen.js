@@ -21,6 +21,8 @@ import img15 from "../../assets/images/15-beer.jpg";
 import LocationScreen from './LocationScreen';
 const IMAGE_ARRAY = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15];
 
+
+
 const Stack = createStackNavigator();
 
 const DetailsScreen = ({navigation, route}) => {

@@ -4,6 +4,7 @@ import AddImage from "../../assets/edit.png";
 
 import * as SQLite from "expo-sqlite";
 
+
 const EditScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");

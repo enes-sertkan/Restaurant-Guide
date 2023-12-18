@@ -11,7 +11,7 @@ const AddScreen = ({ navigation, route }) => {
   const [rating, setRating] = useState("");
   const [description, setDescription] = useState("");
 
-  const [db, setDb] = useState(SQLite.openDatabase("restaurantdb.db"));
+  const [db, ] = useState(SQLite.openDatabase("restaurantdb.db"));
   const [result, setResult] = useState([]);
 
   useEffect(() => {

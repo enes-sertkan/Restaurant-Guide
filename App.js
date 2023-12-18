@@ -6,7 +6,6 @@ import AboutScreen from './components/About/AboutScreen';
 import AddScreen from './components/Add/AddScreen';
 import HomeScreen from './components/Home/HomeScreen';
 import SearchScreen from './components/Search/SearchScreen';
-import EditScreen from './components/Home/EditScreen';
 
 export default function App() {
   const Tab = createBottomTabNavigator();

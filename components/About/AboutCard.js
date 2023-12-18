@@ -2,7 +2,6 @@ import React from 'react'
 import {View, Text, Image, StyleSheet, Dimensions } from 'react-native';
 
 
-
 const AboutCard = ({ name, jobTitle, image }) => {
   return (
     <View style={styles.cardContainer}>

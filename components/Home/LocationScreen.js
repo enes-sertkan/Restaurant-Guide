@@ -4,7 +4,7 @@ import MapView, { Callout, Marker } from 'react-native-maps';
 import Ionic from "react-native-vector-icons/Ionicons";
 import * as Linking from 'expo-linking';
 
-const LocationScreen = ({ navigation, route }) => {
+const LocationScreen = ({ route }) => {
     const [latLng, setLatLng] = useState({});
 
     const fetchGeocode = async () => {

@@ -21,7 +21,6 @@ const AboutScreen = () => {
             image={humaiyunImage} 
 
           />
-            
             <StatusBar style="auto" />
         </View>
       </ScrollView>
